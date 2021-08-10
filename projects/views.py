@@ -6,4 +6,4 @@ def projects(request):
 
 
 def projects(request, pk):
-    return render(request, 'projects/single-project.html')
+    return render(request, 'projects/single-project.html', {"pk": pk})
