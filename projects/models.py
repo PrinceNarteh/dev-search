@@ -3,6 +3,8 @@ import uuid
 
 
 class Project(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+                          primary_key=True, editable=False)
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     demo_link = models.CharField(max_length=2000, blank=True, null=True)
@@ -12,8 +14,6 @@ class Project(models.Model):
     vote_ratio = models.IntegerField(default=0, null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
 
     def __str__(self) -> str:
         return self.title
@@ -24,25 +24,25 @@ class Review(models.Model):
         ('up', 'Up Vote'),
         ('down', 'Down Vote')
     )
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+                          primary_key=True, editable=False)
     # owner
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     body = models.TextField(null=True, blank=True)
     value = models.CharField(max_length=20, choices=VOTE_CHOICES)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
 
     def __str__(self) -> str:
         return self.value
 
 
 class Tag(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+                          primary_key=True, editable=False)
     name = models.CharField(max_length=200)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
 
     def __str__(self) -> str:
         return self.name

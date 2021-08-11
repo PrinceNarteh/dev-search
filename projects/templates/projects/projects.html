@@ -1,6 +1,11 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} {% block content%}
+<h1>Here are all the projects</h1>
 
-
-{% block content%}
-  <h1>Here are all the projects</h1>
+<ul>
+  {% for project in projects%}
+  <li>
+    <a href="projects/{{project.id}}">{{project.title}}</a>
+  </li>
+  {% endfor%}
+</ul>
 {% endblock content%}
