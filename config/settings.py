@@ -122,6 +122,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# static files folder
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+# where to upload user generated content
+MEDIA_ROOT = BASE_DIR / 'static/images'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
