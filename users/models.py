@@ -10,6 +10,7 @@ class Profile(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=200, blank=True, null=True)
+    username = models.CharField(max_length=200, blank=True, null=True)
     short_intro = models.CharField(max_length=200, blank=True, null=True)
     bio = models.TextField(null=True, blank=True)
     profile_image = models.ImageField(
