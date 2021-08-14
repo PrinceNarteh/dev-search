@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from .models import Profile
+
 
 def profiles(request):
-  return render(request, 'users/profiles.html')
+    profiles = Profile.objects.all()
+    print(profiles)
+    return render(request, 'users/profiles.html', { "profile" : profiles})
