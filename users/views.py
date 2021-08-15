@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile
-from .form import CustomUserCreationForm
+from .forms import CustomUserCreationForm
 
 
 def loginUser(request):
