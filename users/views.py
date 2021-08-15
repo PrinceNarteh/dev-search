@@ -1,10 +1,14 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Profile
 
 
 def loginUser(request):
+    if request.user.is_authenticated:
+        return redirect('profiles')
+
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
