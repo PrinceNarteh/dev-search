@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile
+from .form import CustomUserCreationForm
 
 
 def loginUser(request):
@@ -35,9 +35,9 @@ def logoutUser(request):
 
 def registerUser(request):
     page = 'register'
-    form = UserCreationForm()
+    form = CustomUserCreationForm()
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
