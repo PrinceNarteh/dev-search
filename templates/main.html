@@ -22,6 +22,14 @@
   </head>
 
   <body>
-    {% include 'navbar.html' %} {% block content %} {% endblock content %}
+    {% comment %} Navigation Bar {% endcomment %}
+    {% include 'navbar.html' %} 
+    
+    {% comment %} Flash messages {% endcomment %}
+    {% include 'flash-message.html' %}
+
+    {% comment %} Main Content  {% endcomment %}
+    {% block content %} 
+    {% endblock content %}
   </body>
 </html>
