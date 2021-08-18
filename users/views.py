@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile
 from .forms import CustomUserCreationForm, ProfileForm
+from .models import Profile, Skill
+from projects.models import Project
 
 
 def loginUser(request):
@@ -37,8 +39,8 @@ def logoutUser(request):
 def registerUser(request):
     page = 'register'
     form = CustomUserCreationForm()
+
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -46,10 +48,11 @@ def registerUser(request):
 
             messages.success(request, "User account was created!")
             login(request, user)
-            return redirect('profiles')
+            return redirect('edit-account')
         else:
             messages.error(request, "Error occurred durring registration!")
     context = {"page": page, "form": form}
+
     return render(request, 'users/login_register.html', context)
 
 
@@ -60,9 +63,9 @@ def profiles(request):
 
 
 def userProfile(request, pk: str):
-    profile = Profile.objects.get(id=pk)
-    top_skills = profile.skill_set.exclude(description__exact="")
-    other_skills = profile.skill_set.filter(description="")
+    profile: Profile = Profile.objects.get(id=pk)
+    top_skills: list[Skill] = profile.skill_set.exclude(description__exact="")
+    other_skills: list[Skill] = profile.skill_set.filter(description="")
     context = {"profile": profile, "top_skills": top_skills,
                "other_skills": other_skills}
     return render(request, 'users/user-profile.html', context)
@@ -70,15 +73,24 @@ def userProfile(request, pk: str):
 
 @login_required(login_url='login')
 def userAccount(request):
-    profile = request.user.profile
-    skills = profile.skill_set.all()
-    projects = profile.project_set.all()
+    profile: Profile = request.user.profile
+    skills: list[Skill] = profile.skill_set.all()
+    projects: list[Project] = profile.project_set.all()
     context = {"profile": profile, "skills": skills, "projects": projects}
     return render(request, 'users/account.html', context)
 
 
 @login_required(login_url='login')
-def editAccout(request):
-    form = ProfileForm()
+def editAccount(request):
+    profile: Profile = request.user.profile
+    form = ProfileForm(instance=profile)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+
+            return redirect('account')
+
     context = {"form": form}
     return render(request, 'users/profile_form.html', context)
