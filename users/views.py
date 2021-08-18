@@ -58,7 +58,6 @@ def registerUser(request):
 
 def profiles(request):
     profiles = Profile.objects.all()
-    print(profiles)
     return render(request, 'users/profiles.html', {"profiles": profiles})
 
 
@@ -94,3 +93,9 @@ def editAccount(request):
 
     context = {"form": form}
     return render(request, 'users/profile_form.html', context)
+
+
+@login_required(login_url="login")
+def createSkill(request):
+    context = {}
+    return render(request, 'users/skill_form.html', context)
