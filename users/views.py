@@ -88,7 +88,7 @@ def editAccount(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-
+            messages.success(request, "Profile updated successfully.")
             return redirect('account')
 
     context = {"form": form}
@@ -106,6 +106,7 @@ def createSkill(request):
             skill: Skill = form.save(commit=False)
             skill.owner = profile
             skill.save()
+            messages.success(request, "Skill was created successfully.")
             return redirect('account')
 
     context = {"form": form}
@@ -122,6 +123,7 @@ def updateSkill(request, pk):
         form = SkillForm(request.POST, instance=skill)
         if form.is_valid():
             form.save()
+            messages.success(request, "Skill was updated successfully.")
             return redirect('account')
 
     context = {"form": form}
@@ -134,7 +136,8 @@ def deleteSkill(request, pk):
     
     if request.method == "POST":
         skill.delete()
+        messages.success(request, "Skill was deleted successfully.")
         return redirect('account')
     
     context = {'object': skill}
-    return render(request, 'users/delete_object.html', context)
+    return render(request, 'delete_template.html', context)
