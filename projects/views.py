@@ -28,7 +28,7 @@ def createProject(request):
             project.owner = profile
             project.save()
             messages.success('Project created successfully!')
-            return redirect('projects')
+            return redirect('account')
 
     context = {'form': form}
     return render(request, 'projects/project_form.html', context)
@@ -45,7 +45,7 @@ def updateProject(request, pk):
         if form.is_valid():
             form.save()
             messages.success('Project updated successfully!')
-            return redirect('projects')
+            return redirect('account')
 
     context = {'form': form}
     return render(request, 'projects/project_form.html', context)
@@ -58,6 +58,6 @@ def deleteProject(request, pk):
     if request.method == "POST":
         project.delete()
         messages.success('Project deleted successfully!')
-        return redirect('projects')
+        return redirect('account')
     context = {'object': project}
     return render(request, 'delete_template.html', context)
