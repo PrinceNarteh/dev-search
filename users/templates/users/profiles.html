@@ -10,7 +10,10 @@
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="{% url 'profiles' %}" method="GET">
+          <form 
+            id="searchForm" 
+            class="form" 
+            action="{% url 'profiles' %}" method="GET">
             <div class="form__field">
               <label for="formInput#search">Search Developers </label>
               <input 
