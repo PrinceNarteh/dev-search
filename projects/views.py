@@ -1,14 +1,26 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
-from projects.forms import ProjectForm
 from django.contrib import messages
-from projects.models import Project
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.shortcuts import redirect, render
+
+from projects.forms import ProjectForm
+from projects.models import Project, Tag
 from users.models import Profile
 
 
 def projects(request):
-    projects = Project.objects.all()
-    context = {'projects': projects}
+    search_query = ''
+
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+
+    projects = Project.objects.filter(
+        Q(title__icontains=search_query) |
+        Q(description__icontains=search_query) |
+        Q(owner__name__icontains=search_query)
+    )
+
+    context = {'projects': projects, "search_query": search_query}
     return render(request, 'projects/projects.html', context)
 
 
