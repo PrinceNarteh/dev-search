@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect, render
 
 from projects.forms import ProjectForm
@@ -10,6 +11,18 @@ from users.models import Profile
 
 def projects(request):
     projects, search_query = search_projects(request)
+    
+    page = request.GET.get('page')
+    results_per_page = 3
+    paginator = Paginator(projects, results_per_page)
+
+    try:
+        projects = paginator.page(page)
+    except PageNotAnInteger:
+        projects = paginator.page(1)
+    except EmptyPage:
+        projects = paginator.page(paginator.num_pages)
+
     context = {'projects': projects, "search_query": search_query}
     return render(request, 'projects/projects.html', context)
 

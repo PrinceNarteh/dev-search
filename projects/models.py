@@ -4,7 +4,8 @@ from users.models import Profile
 
 
 class Project(models.Model):
-    owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        Profile, null=True, blank=True, on_delete=models.SET_NULL)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
     title = models.CharField(max_length=200)
@@ -18,6 +19,9 @@ class Project(models.Model):
     vote_ratio = models.IntegerField(default=0, null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['create_at']
 
     def __str__(self) -> str:
         return self.title
