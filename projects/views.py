@@ -8,7 +8,8 @@ from users.models import Profile
 
 def projects(request):
     projects = Project.objects.all()
-    return render(request, 'projects/projects.html', {'projects': projects})
+    context = {'projects': projects}
+    return render(request, 'projects/projects.html', context)
 
 
 def project(request, pk: str):
