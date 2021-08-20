@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from projects.models import Project
 from users.forms import CustomUserCreationForm, ProfileForm, SkillForm
 from users.models import Profile, Skill
+from users.utils import search_profiles
 
 
 def loginUser(request):
@@ -58,17 +59,7 @@ def registerUser(request):
 
 
 def profiles(request):
-    search_query = ''
-
-    if request.GET.get('search_query'):
-        search_query = request.GET.get('search_query')
-
-    print(search_query)
-
-    profiles = Profile.objects.filter(
-        Q(name__icontains=search_query) |
-        Q(short_intro__icontains=search_query)
-    )
+    profiles, search_query = search_profiles(request)
     context = {"profiles": profiles, "search_query": search_query}
     return render(request, 'users/profiles.html', context)
 
@@ -141,15 +132,16 @@ def updateSkill(request, pk):
     context = {"form": form}
     return render(request, 'users/skill_form.html', context)
 
+
 @login_required(login_url='login')
 def deleteSkill(request, pk):
     profile = request.user.profile
     skill = profile.skill_set.get(id=pk)
-    
+
     if request.method == "POST":
         skill.delete()
         messages.success(request, "Skill was deleted successfully.")
         return redirect('account')
-    
+
     context = {'object': skill}
     return render(request, 'delete_template.html', context)
