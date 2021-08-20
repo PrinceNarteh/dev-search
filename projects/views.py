@@ -11,7 +11,7 @@ from users.models import Profile
 
 def projects(request):
     projects, search_query = search_projects(request)
-    
+
     page = request.GET.get('page')
     results_per_page = 3
     paginator = Paginator(projects, results_per_page)
@@ -23,7 +23,8 @@ def projects(request):
     except EmptyPage:
         projects = paginator.page(paginator.num_pages)
 
-    context = {'projects': projects, "search_query": search_query}
+    context = {'projects': projects,
+               "search_query": search_query, "paginator": paginator}
     return render(request, 'projects/projects.html', context)
 
 
