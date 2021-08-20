@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from projects.models import Project
 from users.forms import CustomUserCreationForm, ProfileForm, SkillForm
 from users.models import Profile, Skill
-from users.utils import search_profiles
+from users.utils import paginate_profiles, search_profiles
 
 
 def loginUser(request):
@@ -60,7 +60,14 @@ def registerUser(request):
 
 def profiles(request):
     profiles, search_query = search_profiles(request)
-    context = {"profiles": profiles, "search_query": search_query}
+    custom_range, profiles  = paginate_profiles(request, profiles, 3)
+    
+    context = {
+        "custom_range": custom_range,
+        "profiles": profiles, 
+        "search_query": search_query,
+    }
+    
     return render(request, 'users/profiles.html', context)
 
 

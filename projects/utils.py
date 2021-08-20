@@ -7,7 +7,6 @@ from projects.models import Project, Tag
 def paginate_projects(request, projects, results_per_page):
 
     page = request.GET.get('page')
-    results_per_page = 3
     paginator = Paginator(projects, results_per_page)
 
     try:
