@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from projects.forms import ProjectForm
+from projects.forms import ProjectForm, ReviewForm
 from projects.models import Project
 from projects.utils import search_projects, paginate_projects
 from users.models import Profile
@@ -23,7 +23,9 @@ def projects(request):
 
 def project(request, pk: str):
     project = Project.objects.get(id=pk)
-    return render(request, 'projects/single-project.html', {'project': project})
+    form = ReviewForm()
+    context = {'form': form, 'project': project}
+    return render(request, 'projects/single-project.html', context)
 
 
 @login_required(login_url='login')
